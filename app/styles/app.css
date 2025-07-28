@@ -1,0 +1,18 @@
+@import './globals.css';
+@import './window.css';
+@import './atom-one-dark.css';
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  margin: 0;
+  overflow: hidden;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  line-height: 1.4;
+}

@@ -3,14 +3,14 @@ import { IpcMainInvokeEvent } from "electron";
 import { ConfigService } from "../config/config.services";
 import { OllamaIpcEvents as msg } from '@/lib/events/ollamaIpcEvents';
 
-const OLLAMA_BASE_URL = ConfigService.getInstance().getConfig("ollamaHost")
+const config = ConfigService.getInstance();
 
 class OllamaService {
   private baseUrl: string;
   activeStreams: Map<string, AsyncGenerator<string>> = new Map();
 
-  constructor(baseUrl: string = OLLAMA_BASE_URL) {
-    this.baseUrl = baseUrl || 'http://localhost:11434';
+  constructor(baseUrl: string = config.getConfig("ollamaHost")) {
+    this.baseUrl = baseUrl;
   }
   async getHost(): Promise<string> {
     return this.baseUrl;
@@ -18,7 +18,7 @@ class OllamaService {
 
   async setHost(host: string): Promise<void> {
     this.baseUrl = host;
-    ConfigService.getInstance().setConfig("ollamaHost", host);
+    config.setConfig("ollamaHost", host);
   }
 
   async getModels(): Promise<OllamaModel[]> {

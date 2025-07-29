@@ -1,5 +1,5 @@
 import React from 'react'
-import { MessageCircle, Zap, Shield, Globe } from 'lucide-react'
+import { MessageCircle, Zap, Shield, Globe, Settings } from 'lucide-react'
 import { connected } from 'process'
 
 interface EmptyStateProps {
@@ -23,11 +23,11 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ isConnected, selectedMod
     },
     {
       icon: <Zap size={24} />,
-      title: { 
+      title: {
         en: 'Real-time Streaming',
         es: 'Transmisión en Tiempo Real'
       },
-      description: { 
+      description: {
         en: "Get responses as they're generated with smooth streaming",
         es: 'Obtén respuestas a medida que se generan con una transmisión fluida'
       }
@@ -70,6 +70,51 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ isConnected, selectedMod
     }
   }
 
+  const gettingStarted = {
+    title: {
+      en: 'Get started by connecting to Ollama',
+      es: 'Comienza por conectarte a Ollama'
+    },
+    instructions: {
+      local: {
+        first: {
+          en: 'Install Ollama from',
+          es: 'Instala Ollama desde'
+        },
+        second: {
+          en: 'Run',
+          es: 'Ejecuta'
+        },
+        third: {
+          en: 'Pull a model:',
+          es: 'Descarga un modelo:'
+        },
+        fourth: {
+          en: 'Start chatting with your AI model',
+          es: 'Comienza a chatear con tu modelo de IA'
+        }
+      },
+      remote:{
+        first: {
+          en: 'Go to settings:',
+          es: 'Ir a ajustes:'
+        },
+        second: {
+          en: 'Enter Your Ollama server Url',
+          es: 'Ingresa la URL del servidor Ollama'
+        },
+        third:{
+          en: 'Ensure the server has a model',
+          es: 'Asegúrate de que el servidor tenga un modelo'
+        },
+        fourth: {
+          en: 'Save, Start chatting with your AI model',
+          es: 'Guardar, Comienza a chatear con tu modelo de IA'
+        }
+      }
+    }
+  }
+
   const lang = navigator.language.startsWith('es') ? 'es' : 'en'
 
   return (
@@ -103,24 +148,38 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ isConnected, selectedMod
         {!isConnected && (
           <div className="mt-8 p-4 bg-gray-700 rounded-lg border border-gray-600">
             <p className="text-gray-300 mb-2">
-              <strong>Getting Started:</strong>
+              <strong>{gettingStarted.title[lang]}</strong>
             </p>
-            <ol className="text-sm text-gray-400 space-y-1 text-left max-w-md mx-auto">
-              <li>
-                1. Install Ollama from <span className="text-blue-400">https://ollama.ai</span>
-              </li>
-              <li>
-                2. Run <code className="bg-gray-600 px-2 py-1 rounded text-xs">ollama serve</code>
-              </li>
-              <li>
-                3. Pull a model: <code className="bg-gray-600 px-2 py-1 rounded text-xs">ollama pull llama2</code>
-              </li>
-              <li>4. Refresh this page to connect</li>
-            </ol>
+            <div className="flex flex-row items-center">
+              <ol className="text-sm text-gray-400 space-y-1 text-left max-w-md mx-auto">
+                <li>
+                  1. {gettingStarted.instructions.local.first[lang]} <span className="text-blue-400">https://ollama.ai</span>
+                </li>
+                <li>
+                  2. {gettingStarted.instructions.local.second[lang]} <code className="bg-gray-600 px-2 py-1 rounded text-xs">ollama serve</code>
+                </li>
+                <li>
+                  3. {gettingStarted.instructions.local.third[lang]} <code className="bg-gray-600 px-2 py-1 rounded text-xs">ollama pull llama2</code>
+                </li>
+                <li>4. {gettingStarted.instructions.local.fourth[lang]}</li>
+              </ol>
+              <b>{lang == 'en' ? 'Or:' : 'O:'}</b>
+              <ol className="text-sm text-gray-400 space-y-1 text-left max-w-md mx-auto">
+                <li className="flex flex-row">
+                  <span>1. {gettingStarted.instructions.remote.first[lang]} </span> <Settings size={18} className="ml-3 rounded"/>
+                </li>
+                <li>
+                  2. {gettingStarted.instructions.remote.second[lang]}
+                </li>
+                <li>
+                  3. {gettingStarted.instructions.remote.third[lang]}
+                </li>
+                <li>4. {gettingStarted.instructions.remote.fourth[lang]}</li>
+              </ol>
+            </div>
           </div>
         )}
       </div>
     </div>
   )
 }
-

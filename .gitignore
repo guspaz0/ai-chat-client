@@ -6,3 +6,4 @@ out
 temp
 .env*
 .vscode
+*.env

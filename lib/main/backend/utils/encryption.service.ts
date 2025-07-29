@@ -2,7 +2,7 @@ import * as crypto from 'crypto';
 import EnvService from '../config/env.service';
 
 const ALGORITHM = EnvService.getVariable("ALGORITHM") as string
-const SECRET_KEY = EnvService.getVariable("SECRET_KEY") as string
+const SECRET_KEY = EnvService.getVariable("SECRET_KEY") || EnvService.generateRandomString("SECRET_KEY", 64);
 const IV = crypto.randomBytes(16);
 
 export function encrypt(text: string): string {

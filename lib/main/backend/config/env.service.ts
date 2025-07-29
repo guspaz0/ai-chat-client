@@ -5,8 +5,8 @@ import fs from 'fs'
 class envService {
     readonly isDev = !app.isPackaged && process.env.NODE_ENV === 'development'
     private readonly path: string = app.isPackaged
-        ? path.join(process.resourcesPath, '.env')
-        : path.resolve(process.cwd(), '.env');
+        ? path.join(process.resourcesPath, '.env.production')
+        : path.resolve(process.cwd(), '.env.production');
     private envs: Map<string, string> = new Map();
 
     constructor(){
@@ -39,7 +39,7 @@ class envService {
     }
 
     // Example: A mix of uppercase, lowercase, digits, and symbols
-    generateRandomString(name: string, length: number) {
+    public generateRandomString(name: string, length: number) {
         const ranges = [
             [48, 57],   // 0-9
             [97, 102]  // a-z

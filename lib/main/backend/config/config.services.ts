@@ -8,50 +8,51 @@ const packageJsonPath = path.join(app.getAppPath(), 'package.json');
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 
 let configRootPath;
-let configJson;
+let configJson: ConfigJson;
 try {
     configRootPath = path.join(app.getPath('userData'), 'config.json');
     configJson = JSON.parse(fs.readFileSync(configRootPath, 'utf-8'))
 } catch (e) {
-    fspromise.writeFile(app.getPath('userData')+'/config.json', 
+    fspromise.writeFile(app.getPath('userData')+'/config.json',
         JSON.stringify({
-            app: packageJson.name, 
+            app: packageJson.name,
             version: packageJson.version
         },null,4)
     ).then(()=> {
         configRootPath = path.join(app.getPath('userData'), 'config.json');
-        configJson = JSON.parse(fs.readFileSync(configRootPath, 'utf-8'))
+        configJson = JSON.parse(fs.readFileSync(configRootPath, 'utf-8')) as ConfigJson
     })
+}
+interface ConfigJson {
+  ollamaHost?: string
+  defaultModel?: string
 }
 
 export class ConfigService {
-    private static instance: ConfigService;
+    private static #instance: ConfigService;
+    private ollamaHost?: string;
+    private defaultModel?: string;
 
-    private constructor() {}
+    private constructor() {
+      this.ollamaHost = configJson.ollamaHost || encrypt('http://localhost:11434');
+      this.defaultModel = configJson.defaultModel || '';
+    }
 
     public static getInstance(): ConfigService {
-        if (!ConfigService.instance) {
-            ConfigService.instance = new ConfigService();
+        if (!ConfigService.#instance) {
+            ConfigService.#instance = new ConfigService();
         }
-        return ConfigService.instance;
+        return ConfigService.#instance;
     }
 
     public getConfig(key: string): any {
-        return configJson[key];
+      if (!this[key]) return;
+      return decrypt(this[key]);
     }
 
     public setConfig(key: string, value: any): void {
-        configJson[key] = value;
-        fs.writeFileSync(configRootPath, JSON.stringify(configJson, null, 4));
-    }
-
-    public encryptConfig(key: string): string {
-        const value = this.getConfig(key);
-        return encrypt(JSON.stringify(value));
-    }
-
-    public decryptConfig(encryptedValue: string): any {
-        const decrypted = decrypt(encryptedValue);
-        return JSON.parse(decrypted);
+        if(!this[key]) return;
+        this[key] = encrypt(value);
+        fs.writeFileSync(configRootPath, JSON.stringify(this, null, 4));
     }
 }

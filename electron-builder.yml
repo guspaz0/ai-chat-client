@@ -1,4 +1,4 @@
-appId: com.guspaz0.ai-prompter
+appId: com.guspaz0.ai-chat-client
 productName: AiAgentClient
 directories:
   buildResources: resources/build
@@ -10,11 +10,11 @@ files:
   - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
   - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
 extraResources:
-  - .env
+  - .env.production
 asarUnpack:
   - resources/**
 win:
-  executableName: AiAgentClient
+  executableName: 'Ai Chat'
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
@@ -30,7 +30,6 @@ mac:
   notarize: false
   category: public.app-category.utilities
   darkModeSupport: true
-
 dmg:
   artifactName: ${name}-${version}.${ext}
   background: resources/build/background.png
@@ -40,7 +39,7 @@ linux:
     - AppImage
     - snap
     - deb
-  maintainer: electronjs.org
+  maintainer: github.com/guspaz0
   category: Utility
 appImage:
   artifactName: ${name}-${version}.${ext}
@@ -49,4 +48,5 @@ publish:
   provider: github
   owner: guspaz0
   repo: ai-chat-client
+  token: ${env.AI_CHAT_RELEASES}
   vPrefixedTagName: true

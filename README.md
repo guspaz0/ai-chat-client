@@ -11,6 +11,8 @@
     A Modern desktop app multiplaform for chat with LLM models and AI assistants like Ollama.
 </p>
 
+![Demo](resources/demo.png)
+
 <br />
 
 <br />
